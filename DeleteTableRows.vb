@@ -9,3 +9,38 @@ Sub DeleteTableRows(ByRef Table As ListObject)
     Table.DataBodyRange.Columns.Count).Rows.Delete
     On Error GoTo 0
 End Sub
+
+
+https://www.thespreadsheetguru.com/blog/2014/6/20/the-vba-guide-to-listobject-excel-tables
+--Delete all rows except 1st row 
+
+Sub ResetTable()
+
+Dim tbl As ListObject
+
+Set tbl = ActiveSheet.ListObjects("Table1")
+'Delete all table rows except first row
+  With tbl.DataBodyRange
+    If .Rows.Count > 1 Then
+      .Offset(1, 0).Resize(.Rows.Count - 1, .Columns.Count).Rows.Delete
+    End If
+  End With
+'Clear out data from first table row
+  tbl.DataBodyRange.Rows(1).ClearContents
+End Sub
+
+--same but preserve formulas
+Sub ResetTable()
+
+Dim tbl As ListObject
+
+Set tbl = ActiveSheet.ListObjects("Table1")
+'Delete all table rows except first row
+  With tbl.DataBodyRange
+    If .Rows.Count > 1 Then
+      .Offset(1, 0).Resize(.Rows.Count - 1, .Columns.Count).Rows.Delete
+    End If
+  End With
+'Clear out data from first table row (retaining formulas)
+  tbl.DataBodyRange.Rows(1).SpecialCells(xlCellTypeConstants).ClearContents
+End Sub
