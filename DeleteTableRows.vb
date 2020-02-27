@@ -44,3 +44,15 @@ Set tbl = ActiveSheet.ListObjects("Table1")
 'Clear out data from first table row (retaining formulas)
   tbl.DataBodyRange.Rows(1).SpecialCells(xlCellTypeConstants).ClearContents
 End Sub
+
+--
+Mine
+Sub DeleteTableRows(ByRef Table As ListObject)
+    On Error Resume Next
+    '~~> Clear Header Row `IF` it exists
+    Table.DataBodyRange.Rows(1).SpecialCells(xlCellTypeConstants).ClearContents
+    '~~> Delete all the other rows `IF `they exist
+    Table.DataBodyRange.Offset(1, 0).Resize(Table.DataBodyRange.Rows.Count - 1, _
+    Table.DataBodyRange.Columns.Count).Rows.Delete
+    On Error GoTo 0
+End Sub
